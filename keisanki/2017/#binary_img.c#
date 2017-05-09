@@ -1,0 +1,41 @@
+#include <cv.h>
+#include <highgui.h>
+
+int
+main (int argc, char **argv)
+{
+  int x, y;
+  uchar p[3];
+  float yuv[3];
+  IplImage *img;
+
+  if (argc != 2 || (img = cvLoadImage (argv[1], CV_LOAD_IMAGE_COLOR)) == 0)
+    return -1;
+
+  // (1)画素値（R,G,B）を順次取得し，変更する
+  for (y = 0; y < img->height; y++) {
+    for (x = 0; x < img->width; x++) {
+
+      p[0] = img->imageData[img->widthStep * y + x * 3];        // B
+      p[1] = img->imageData[img->widthStep * y + x * 3 + 1];    // G
+      p[2] = img->imageData[img->widthStep * y + x * 3 + 2];    // R
+
+      yuv[0] = (0.2125*p[2]+0.7154*p[1]+0.0721*p[0])*219+16; // Y
+      yuv[1] = (-0.115*p[2]-0.386*p[1]+0.500*p[0])*224+128; // U
+      yuv[2] = (0.500*p[2]-0.454*p[1]-0.046*p[0])*224+128; // V
+      
+      img->imageData[img->widthStep * y + x * 3] = cvRound (0);
+      img->imageData[img->widthStep * y + x * 3 + 1] = cvRound (0);
+      img->imageData[img->widthStep * y + x * 3 + 2] = cvRound (0);
+    }
+  }
+
+  cvNamedWindow ("Image", CV_WINDOW_AUTOSIZE);
+  cvShowImage ("Image", img);
+  cvWaitKey (0);
+
+  cvDestroyWindow ("Image");
+  cvReleaseImage (&img);
+
+  return 0;
+}
