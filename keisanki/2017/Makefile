@@ -1,4 +1,4 @@
-all: sample1 binarization edge faceTracking camera camera_bin camera_nega direct gray binary extract edge_detect trackbar mouse_event bin_trackbar gauss adaptive
+all: sample1 binarization edge faceTracking camera camera_bin camera_nega direct gray binary extract edge_detect trackbar mouse_event bin_trackbar gauss adaptive nega
 
 # kadai1
 sample1: ./kadai1/sample1.c
@@ -56,3 +56,6 @@ gauss : ./report/gaussian_filter.c
 
 adaptive : ./report/adaptive_threshold.c
 	cd report; gcc -o adaptive adaptive_threshold.c `pkg-config opencv --cflags` `pkg-config opencv --libs`
+
+nega : ./report/gui_switch_nega.c
+	cd report; gcc -o nega gui_switch_nega.c `pkg-config opencv --cflags` `pkg-config opencv --libs`
