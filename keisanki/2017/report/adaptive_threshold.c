@@ -5,6 +5,7 @@
 /* グローバル変数 */
 IplImage *img = 0;
 IplImage *src_img = 0;
+IplImage *src_img_gray = 0;
 
 int
 main (int argc, char *argv[])
@@ -16,10 +17,12 @@ main (int argc, char *argv[])
     return -1;
 
   // 画像領域を確保し，初期化する
-  img = cvCreateImage (cvGetSize (src_img), IPL_DEPTH_8U, 3);
+  img = cvCreateImage (cvGetSize (src_img), IPL_DEPTH_8U, 1);
+  src_img_gray = cvCreateImage (cvGetSize (src_img), IPL_DEPTH_8U, 1);
+  cvCvtColor (src_img, src_img_gray, CV_BGR2GRAY);
 
-  // 平滑化処理
-  cvSmooth(src_img, img, CV_GAUSSIAN, 9, 9, 0, 0);
+  // 適応的二値化処理
+  cvAdaptiveThreshold (src_img_gray, img, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 7, 8);
 
   // ウィンドウ作成・表示
   cvNamedWindow ("Filtered Image", CV_WINDOW_AUTOSIZE);
