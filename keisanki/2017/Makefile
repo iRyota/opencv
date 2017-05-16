@@ -1,4 +1,4 @@
-all: sample1 binarization edge faceTracking camera camera_bin camera_nega direct gray binary extract edge_detect trackbar mouse_event bin_trackbar
+all: sample1 binarization edge faceTracking camera camera_bin camera_nega direct gray binary extract edge_detect trackbar mouse_event bin_trackbar gauss
 
 # kadai1
 sample1: ./kadai1/sample1.c
@@ -49,4 +49,8 @@ mouse_event : ./kadai5/mouse_event.c
 
 bin_trackbar : ./kadai5/binary_trackbar.c
 	cd kadai5; gcc -o bin_trackbar binary_trackbar.c `pkg-config opencv --cflags` `pkg-config opencv --libs`
+
+# report
+gauss : ./report/gaussian_filter.c
+	cd report; gcc -o gauss gaussian_filter.c `pkg-config opencv --cflags` `pkg-config opencv --libs`
 
